@@ -5,25 +5,21 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.whatsappclone.MainActivity
+import com.example.whatsappclone.MainActivity2
 import com.example.whatsappclone.R
-import com.example.whatsappclone.databinding.ActivityNumberBinding
-import com.google.firebase.FirebaseException
+import com.example.whatsappclone.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
-import java.util.concurrent.TimeUnit
 
-class NumberActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityNumberBinding
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNumberBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         //enableEdgeToEdge()
         setContentView(binding.root)
         /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -34,7 +30,7 @@ class NumberActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         if(auth.currentUser != null){
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this,MainActivity2::class.java))
             finish()
         }
         binding.button.setOnClickListener {
@@ -60,7 +56,7 @@ class NumberActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(this){
             if(it.isSuccessful){
                 Toast.makeText(this, "Logged In Successfully\nNow please update your profile", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(applicationContext, MainActivity::class.java))
+                startActivity(Intent(applicationContext, MainActivity2::class.java))
                 finish()
                 Log.d("WhatsAppClone" , "onVerificationCompleted Success")
             }else{

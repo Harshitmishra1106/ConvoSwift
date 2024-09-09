@@ -1,11 +1,23 @@
 package com.example.whatsappclone.ui
 
+//import android.app.Fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.whatsappclone.R
+import com.example.whatsappclone.adapter.CallAdapter
+//import com.example.whatsappclone.adapter.ChatAdapter
+import com.example.whatsappclone.databinding.FragmentCallBinding
+//import com.example.whatsappclone.databinding.FragmentChatBinding
+import com.example.whatsappclone.model.UserModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,24 +30,40 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CallFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding: FragmentCallBinding
+    lateinit var database: FirebaseDatabase
+    lateinit var userList: ArrayList<UserModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_call, container, false)
+        binding = FragmentCallBinding.inflate(layoutInflater)
+
+        database = FirebaseDatabase.getInstance()
+        userList = ArrayList()
+
+        database!!.reference.child("users")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    userList.clear()
+
+                    for (snapshot1 in snapshot.children){
+                        val user = snapshot1.getValue(UserModel::class.java)
+                        if(user!!.uid != FirebaseAuth.getInstance().uid){
+                            userList.add(user)
+                        }
+                    }
+
+                    binding.callRecyclerView.adapter = CallAdapter(requireContext(),userList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+        return binding.root
     }
 
     companion object {

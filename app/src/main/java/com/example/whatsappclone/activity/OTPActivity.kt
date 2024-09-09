@@ -2,25 +2,12 @@ package com.example.whatsappclone.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.whatsappclone.MainActivity
-import com.example.whatsappclone.R
+import com.example.whatsappclone.MainActivity2
 import com.example.whatsappclone.databinding.ActivityOtpactivityBinding
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
-import java.util.concurrent.TimeUnit
 
 class OTPActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOtpactivityBinding
@@ -61,7 +48,7 @@ class OTPActivity : AppCompatActivity() {
             auth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(this){
                 if(it.isSuccessful){
                     Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(applicationContext, NumberActivity::class.java))
+                    startActivity(Intent(applicationContext, MainActivity2::class.java))
                     finish()
                 }else{
                     Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show()
@@ -69,7 +56,7 @@ class OTPActivity : AppCompatActivity() {
             }
         }
         binding.signIn.setOnClickListener{
-            startActivity(Intent(applicationContext, NumberActivity::class.java))
+            startActivity(Intent(applicationContext, MainActivity2::class.java))
             finish()
         }
     }

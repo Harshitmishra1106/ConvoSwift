@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.StatusFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.StatusFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/addStatus"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:src="@drawable/logo"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/uploadBtn"
+        android:layout_marginTop="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload My status"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is status fragment" />
+        android:layout_height="wrap_content"
+        android:text="View Status"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/statusRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/status_item_layout"
+        android:layout_marginTop="10dp"/>
+
+
+
+
+</LinearLayout>

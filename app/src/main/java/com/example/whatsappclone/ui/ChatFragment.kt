@@ -1,10 +1,12 @@
 package com.example.whatsappclone.ui
 
+//import android.app.Fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.whatsappclone.R
 import com.example.whatsappclone.adapter.ChatAdapter
 import com.example.whatsappclone.databinding.FragmentChatBinding
@@ -31,13 +33,20 @@ class ChatFragment : Fragment() {
         database = FirebaseDatabase.getInstance()
         userList = ArrayList()
 
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         database!!.reference.child("users")
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     userList.clear()
 
                     for (snapshot1 in snapshot.children){
-                       val user = snapshot1.getValue(UserModel::class.java)
+                        val user = snapshot1.getValue(UserModel::class.java)
                         if(user!!.uid != FirebaseAuth.getInstance().uid){
                             userList.add(user)
                         }
@@ -50,7 +59,7 @@ class ChatFragment : Fragment() {
                     TODO("Not yet implemented")
                 }
             })
-        return binding.root
+
     }
 
 
