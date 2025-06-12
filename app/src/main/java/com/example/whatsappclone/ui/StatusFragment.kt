@@ -81,7 +81,7 @@ class StatusFragment : Fragment() {
         binding.uploadBtn.setOnClickListener{
             uploadData()
         }
-        database.reference.child("users")
+        database.reference.child("status")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (snapshot1 in snapshot.children){

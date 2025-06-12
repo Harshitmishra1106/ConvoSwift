@@ -31,11 +31,11 @@ class StatusAdapter(var context: Context, var list: ArrayList<StatusModel>)  : R
     }
 
     override fun onBindViewHolder(holder: StatusViewHolder, position: Int) {
-        val user = list[position]
-        Glide.with(context).load(user.imageUrl).into(holder.binding.addStatus)
+        var user = list[position]
+        Glide.with(context).load(user.imageUrl).into(holder.binding.adStatus)
         holder.binding.name.text = user.name
         holder.itemView.setOnClickListener{
-            val imageBitmap = holder.binding.addStatus.drawToBitmap()
+            val imageBitmap = holder.binding.adStatus.drawToBitmap()
             val intent = Intent(this.context, StoryActivity::class.java)
             intent.putExtra("imageBitmap", imageBitmap)
             startActivity(context,intent, null)
