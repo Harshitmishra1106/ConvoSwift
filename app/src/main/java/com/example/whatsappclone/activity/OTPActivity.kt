@@ -14,14 +14,8 @@ class OTPActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         binding = ActivityOtpactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }*/
 
         auth = FirebaseAuth.getInstance()
 
@@ -51,7 +45,7 @@ class OTPActivity : AppCompatActivity() {
                     startActivity(Intent(applicationContext, MainActivity2::class.java))
                     finish()
                 }else{
-                    Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Registration Failed ", Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -35,10 +35,10 @@ class StatusAdapter(var context: Context, var list: ArrayList<StatusModel>)  : R
         Glide.with(context).load(user.imageUrl).into(holder.binding.adStatus)
         holder.binding.name.text = user.name
         holder.itemView.setOnClickListener{
-            val imageBitmap = holder.binding.adStatus.drawToBitmap()
-            val intent = Intent(this.context, StoryActivity::class.java)
-            intent.putExtra("imageBitmap", imageBitmap)
-            startActivity(context,intent, null)
+            //val imageBitmap = holder.binding.adStatus.drawToBitmap()
+            val intent = Intent(context, StoryActivity::class.java)
+            intent.putExtra("imageUrl", user.imageUrl)
+            context.startActivity(intent)
         }
     }
 

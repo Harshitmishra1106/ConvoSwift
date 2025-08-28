@@ -19,15 +19,14 @@ import com.google.firebase.database.ValueEventListener
 
 class ChatFragment : Fragment() {
 
-    lateinit var binding: FragmentChatBinding
-    lateinit var database: FirebaseDatabase
+    private lateinit var binding: FragmentChatBinding
+    private lateinit var database: FirebaseDatabase
     lateinit var userList: ArrayList<UserModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentChatBinding.inflate(layoutInflater)
 
         database = FirebaseDatabase.getInstance()
@@ -53,6 +52,7 @@ class ChatFragment : Fragment() {
                     }
 
                     binding.userListRecyclerView.adapter = ChatAdapter(requireContext(),userList)
+                    checkEmptyState()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -61,6 +61,17 @@ class ChatFragment : Fragment() {
             })
 
     }
+
+    private fun checkEmptyState() {
+        if (userList.isEmpty()) {
+            binding.userListRecyclerView.visibility = View.GONE
+            binding.emptyView.visibility = View.VISIBLE
+        } else {
+            binding.userListRecyclerView.visibility = View.VISIBLE
+            binding.emptyView.visibility = View.GONE
+        }
+    }
+
 
 
 }

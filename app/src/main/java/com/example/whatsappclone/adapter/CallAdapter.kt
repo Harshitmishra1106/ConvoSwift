@@ -1,9 +1,11 @@
 package com.example.whatsappclone.adapter
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +16,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.whatsappclone.R
 import com.example.whatsappclone.databinding.CallUserItemLayoutBinding
+import com.example.whatsappclone.model.NotesModel
 import com.example.whatsappclone.model.UserModel
+import com.google.android.play.integrity.internal.k
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
+import com.google.firebase.storage.FirebaseStorage
 
 
-class CallAdapter(var context: Context, var list: ArrayList<UserModel>) : RecyclerView.Adapter<CallAdapter.CallViewHolder>(){
-
+class CallAdapter(var context: Context, var list: ArrayList<NotesModel>) : RecyclerView.Adapter<CallAdapter.CallViewHolder>(){
+    private lateinit var database: FirebaseDatabase
+    private lateinit var storage: FirebaseStorage
     inner class CallViewHolder(view: View) : RecyclerView.ViewHolder(view){
         var binding: CallUserItemLayoutBinding = CallUserItemLayoutBinding.bind(view)
     }
@@ -30,15 +38,45 @@ class CallAdapter(var context: Context, var list: ArrayList<UserModel>) : Recycl
     }
 
     override fun onBindViewHolder(holder: CallViewHolder, position: Int) {
-        var user = list[position]
-        Glide.with(context).load(user.imageUrl).into(holder.binding.userImage)
+        val user = list[position]
+        database = FirebaseDatabase.getInstance()
+        storage = FirebaseStorage.getInstance()
         holder.binding.userName.text = user.name
-        holder.binding.phone.text = user.number
-        holder.binding.videoCall.setOnClickListener{
-            Toast.makeText(this.context, "Video call facility to be added soon", Toast.LENGTH_SHORT).show()
+        holder.binding.phone.text = user.name
+        holder.binding.likeBtn.setOnClickListener{
+            val updates = mapOf<String, Any>(
+                "likes" to ServerValue.increment(1) // increment by 1
+            )
+            database.reference.child("Notes")
+                .child((user.uid.toString()))
+                .updateChildren(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(this.context, "Looks to be liked by you", Toast.LENGTH_SHORT)
+                        .show()
+                }
         }
-        holder.binding.phoneCall.setOnClickListener{
-            Toast.makeText(this.context, "Phone call facility to be added soon", Toast.LENGTH_SHORT).show()
+        holder.binding.downloadBtn.setOnClickListener{
+                downloadPdfWithDownloadManager(context, user.bookUrl!!, user.name.toString())
+        }
+    }
+
+    private fun downloadPdfWithDownloadManager(context: Context, url: String, fileName: String){
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val uri = Uri.parse(url)
+
+        val request = DownloadManager.Request(uri)
+            .setTitle(fileName)
+            .setDescription("Downloading PDF...")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setAllowedOverMetered(true)
+            .setAllowedOverRoaming(true)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName) // Save to Downloads folder
+
+        try {
+            downloadManager.enqueue(request)
+            Toast.makeText(context, "Download started...", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 

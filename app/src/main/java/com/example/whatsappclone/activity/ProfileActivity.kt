@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -43,45 +44,52 @@ class ProfileActivity : AppCompatActivity() {
         val drawable: Drawable? = ResourcesCompat.getDrawable(resources, R.drawable.logo,null)
         selectedImg = Uri.parse(drawable?.toBitmap().toString())
 
-        database.reference.child("users")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if(auth.currentUser?.displayName!=null){
-                        Toast.makeText(applicationContext, "Your profile is already up to date\nPress continue button to return to chat", Toast.LENGTH_SHORT).show()
-                        binding.userImage.setOnClickListener{
-                            Toast.makeText(applicationContext, "Cannot update it", Toast.LENGTH_SHORT).show()
-                        }
-                        binding.continueBtn.setOnClickListener{
-                            startActivity(Intent(applicationContext,MainActivity2::class.java))
-                            finish()
-                        }
-                    }
-                }
+        if(auth.currentUser?.displayName!=null){
+            makeDisable()
+            binding.goBackBtn.setOnClickListener{
+                val intent = Intent(this, MainActivity2::class.java)
+                startActivity(intent)
+            }
+            binding.logout.setOnClickListener {
+                auth.signOut()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+            
+        }
+        else {
+            binding.userImage.setOnClickListener {
+                val intent = Intent()
+                intent.action = Intent.ACTION_GET_CONTENT
+                intent.type = "image/*"
+                startActivityForResult(intent, 1)
+            }
+            binding.continueBtn.setOnClickListener {
+                if (binding.userName.text!!.isEmpty()) {
+                    Toast.makeText(this, "Please Enter Your Name", Toast.LENGTH_SHORT).show()
+                } else if (binding.userImage == null) {
+                    Toast.makeText(this, "Please Select Your Image", Toast.LENGTH_SHORT).show()
+                } else if (binding.phoneNo.text!!.isEmpty()) {
+                    Toast.makeText(this, "Please Enter Your Number", Toast.LENGTH_SHORT).show()
+                } else uploadData()
+            }
+            binding.logout.setOnClickListener {
+                Toast.makeText(this, "Please Complete Your Profile", Toast.LENGTH_SHORT).show()
+            }
+        }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(applicationContext, "Please enter your details", Toast.LENGTH_SHORT).show()
-                }
+    }
 
-            })
-        binding.userImage.setOnClickListener{
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            startActivityForResult(intent,1)
-        }
-        binding.continueBtn.setOnClickListener{
-            if(binding.userName.text!!.isEmpty()){
-                Toast.makeText(this, "Please Enter Your Name", Toast.LENGTH_SHORT).show()
-            }else if(binding.userImage ==null){
-                Toast.makeText(this, "Please Select Your Image", Toast.LENGTH_SHORT).show()
-            }else if(binding.phoneNo.text!!.isEmpty()) {
-                Toast.makeText(this, "Please Enter Your Number", Toast.LENGTH_SHORT).show()
-            }else uploadData()
-        }
-        binding.logout.setOnClickListener{
-            auth.signOut()
-            startActivity(Intent(this,MainActivity::class.java))
-        }
+    private fun makeDisable(){
+        binding.continueBtn.visibility = View.INVISIBLE
+        binding.continueBtn.isClickable = false
+        binding.userImage.visibility = View.INVISIBLE
+        binding.userImage.isClickable = false
+        binding.goBackBtn.visibility = View.VISIBLE
+        binding.goBackBtn.isClickable = true
+        binding.profileMessage.text = "Profile Settings Already Done"
 
     }
 
@@ -104,8 +112,11 @@ class ProfileActivity : AppCompatActivity() {
             .setValue(user)
             .addOnSuccessListener {
                 Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this,MainActivity2::class.java))
-                finish()
+                makeDisable()
+                binding.goBackBtn.setOnClickListener{
+                    val intent = Intent(this, MainActivity2::class.java)
+                    startActivity(intent)
+                }
             }
     }
 

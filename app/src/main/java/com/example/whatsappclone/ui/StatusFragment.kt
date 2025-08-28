@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.transition.Visibility
 import com.example.whatsappclone.MainActivity2
 import com.example.whatsappclone.R
 import com.example.whatsappclone.StoryActivity
@@ -48,7 +49,7 @@ class StatusFragment : Fragment() {
     private lateinit var storage: FirebaseStorage
     private lateinit var selectedImg: Uri
     private lateinit var userList: ArrayList<StatusModel>
-    private lateinit var s: String
+    private var s: String?= null
 
     private var param1: String? = null
     private var param2: String? = null
@@ -70,23 +71,23 @@ class StatusFragment : Fragment() {
         database = FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance()
         userList = ArrayList()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        s=null
         val drawable: Drawable? = ResourcesCompat.getDrawable(resources,R.drawable.logo,null)
         selectedImg = Uri.parse(drawable?.toBitmap().toString())
-        binding.addStatus.setOnClickListener{
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            startActivityForResult(intent,1)
-        }
-        binding.uploadBtn.setOnClickListener{
-            uploadData()
-        }
+
         database.reference.child("status")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (snapshot1 in snapshot.children){
-                        val user = snapshot1.getValue(UserModel::class.java)
+                        val user = snapshot1.getValue(StatusModel::class.java)
                         if(user!!.uid == FirebaseAuth.getInstance().uid){
+                            makeDisable()
                             s = user.name.toString()
                             break
                         }
@@ -97,11 +98,33 @@ class StatusFragment : Fragment() {
                     TODO("Not yet implemented")
                 }
             })
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+            database.reference.child("users")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (snapshot1 in snapshot.children){
+                            val user = snapshot1.getValue(UserModel::class.java)
+                            if(user!!.uid == FirebaseAuth.getInstance().uid){
+                                s = user.name.toString()
+                                break
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            binding.addStatus.setOnClickListener{
+                val intent = Intent()
+                intent.action = Intent.ACTION_GET_CONTENT
+                intent.type = "image/*"
+                startActivityForResult(intent,1)
+            }
+            binding.uploadBtn.setOnClickListener{
+                uploadData()
+            }
+
         database.reference.child("status")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -114,7 +137,7 @@ class StatusFragment : Fragment() {
                         }
                     }
 
-                    binding.statusRecyclerView.adapter = StatusAdapter(requireContext(),userList)
+                    binding.statusRecyclerView.adapter = StatusAdapter(binding.root.context,userList)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -142,6 +165,14 @@ class StatusFragment : Fragment() {
                 }
             }
     }
+
+    private fun makeDisable() {
+        binding.addStatus.visibility = View.INVISIBLE
+        binding.addStatus.isClickable = false
+        binding.uploadBtn.visibility = View.INVISIBLE
+        binding.uploadBtn.isClickable = false
+    }
+
     private fun uploadData() {
         val reference = storage.reference.child("Status").child(Date().time.toString())
         reference.putFile(selectedImg).addOnCompleteListener{
@@ -160,6 +191,7 @@ class StatusFragment : Fragment() {
             .setValue(user)
             .addOnSuccessListener {
                 Toast.makeText(this.requireContext(), "Status uploaded", Toast.LENGTH_SHORT).show()
+                makeDisable()
             }
     }
 

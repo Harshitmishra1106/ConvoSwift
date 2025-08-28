@@ -9,7 +9,7 @@
         android:id="@+id/userImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/notes"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         />
@@ -31,7 +31,7 @@
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Harshit Mishra"
+            android:text="Book Name"
             android:textSize="18sp"
             android:textColor="@color/black"/>
 
@@ -42,20 +42,20 @@
             android:text="0982731645"/>
         </LinearLayout>
         <ImageView
-            android:id="@+id/videoCall"
+            android:id="@+id/likeBtn"
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
             android:layout_weight="1"
-            android:src="@drawable/video_call"/>
+            android:src="@drawable/like"/>
 
         <ImageView
-            android:id="@+id/phoneCall"
+            android:id="@+id/downloadBtn"
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
             android:layout_weight="1"
-            android:src="@drawable/phone" />
+            android:src="@drawable/download" />
     </LinearLayout>
 
 </RelativeLayout>

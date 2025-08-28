@@ -42,6 +42,7 @@
         android:textStyle="bold"
         android:text="Profile Info"/>
     <TextView
+        android:id="@+id/profileMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -80,6 +81,18 @@
         android:layout_marginTop="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:visibility="visible"
+        android:clickable="true"
         android:text="Continue"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/goBackBtn"
+            android:layout_marginTop="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:visibility="invisible"
+            android:clickable="false"
+            android:text="Go Back"/>
     </LinearLayout>
 </LinearLayout>

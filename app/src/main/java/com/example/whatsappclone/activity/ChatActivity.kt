@@ -1,11 +1,13 @@
 package com.example.whatsappclone.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.whatsappclone.MainActivity2
 import com.example.whatsappclone.R
 import com.example.whatsappclone.adapter.MessageAdapter
 import com.example.whatsappclone.databinding.ActivityChatBinding
@@ -23,7 +25,7 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var senderUid: String
     private lateinit var receiverUid: String
-
+    private lateinit var receiverName: String
     private lateinit var senderRoom: String
     private lateinit var receiverRoom: String
 
@@ -35,6 +37,8 @@ class ChatActivity : AppCompatActivity() {
 
         senderUid = FirebaseAuth.getInstance().uid.toString()
         receiverUid = intent.getStringExtra("uid")!!
+        receiverName = intent.getStringExtra("name")!!
+        binding.name.text = receiverName
 
         list = ArrayList()
 
@@ -83,5 +87,9 @@ class ChatActivity : AppCompatActivity() {
                 }
 
             })
+        binding.backBtn.setOnClickListener{
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
+        }
     }
 }
