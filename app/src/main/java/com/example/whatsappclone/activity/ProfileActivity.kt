@@ -30,6 +30,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var storage:FirebaseStorage
     private lateinit var selectedImg:Uri
     private lateinit var dialog: AlertDialog.Builder
+    private var profileName: String = "Name"
+    private var profileNumber: String = "Number"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -40,6 +42,7 @@ class ProfileActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance()
         auth  = FirebaseAuth.getInstance()
+
 
         val drawable: Drawable? = ResourcesCompat.getDrawable(resources, R.drawable.logo,null)
         selectedImg = Uri.parse(drawable?.toBitmap().toString())
@@ -60,6 +63,8 @@ class ProfileActivity : AppCompatActivity() {
             
         }
         else {
+            binding.continueBtn.visibility = View.VISIBLE
+            binding.continueBtn.isClickable = true
             binding.userImage.setOnClickListener {
                 val intent = Intent()
                 intent.action = Intent.ACTION_GET_CONTENT
@@ -83,23 +88,36 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun makeDisable(){
+        database.reference.child("users")
+            .child(FirebaseAuth.getInstance().uid!!)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user = snapshot.getValue(UserModel::class.java)
+                    profileName = user!!.name.toString()
+                    profileNumber = user.number.toString()
+                    binding.userName.apply {
+                        isFocusable = false
+                        isClickable = false
+                        isEnabled = false
+                        setText(profileName)
+                    }
+                    binding.phoneNo.apply {
+                        isFocusable = false
+                        isClickable = false
+                        isEnabled = false
+                        setText(profileNumber)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@ProfileActivity, "$error", Toast.LENGTH_SHORT).show()
+                }
+            })
         binding.continueBtn.visibility = View.INVISIBLE
         binding.continueBtn.isClickable = false
         binding.userImage.visibility = View.INVISIBLE
         binding.userImage.isClickable = false
         binding.goBackBtn.visibility = View.VISIBLE
-        binding.userName.apply {
-            isFocusable = false
-            isClickable = false
-            isEnabled = false
-            setText("Name already saved")
-        }
-        binding.phoneNo.apply {
-            isFocusable = false
-            isClickable = false
-            isEnabled = false
-            setText("Phone no. already saved")
-        }
         binding.goBackBtn.isClickable = true
         binding.profileMessage.text = "Profile Settings Already Done"
 

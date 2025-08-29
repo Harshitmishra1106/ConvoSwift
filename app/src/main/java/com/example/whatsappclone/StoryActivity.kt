@@ -36,9 +36,9 @@ class StoryActivity : AppCompatActivity() {
                 progressStatus += 1
                 // Update the progress bar and display the
                 //current value in the text view
-                handler.post(Runnable {
+                handler.post {
                     progressBar!!.progress = progressStatus
-                })
+                }
                 try {
                     // Sleep for 100 milliseconds.
                     Thread.sleep(70)
@@ -46,9 +46,9 @@ class StoryActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
-            finish()
+            handler.post{
+                finish()
+            }
         }.start()
-        val intent = Intent(this, MainActivity2::class.java)
-        startActivity(intent)
     }
 }

@@ -10,18 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
-import com.example.whatsappclone.R
 import com.example.whatsappclone.adapter.CallAdapter
-import com.example.whatsappclone.adapter.StatusAdapter
-//import com.example.whatsappclone.adapter.ChatAdapter
 import com.example.whatsappclone.databinding.FragmentCallBinding
-import com.example.whatsappclone.databinding.FragmentStatusBinding
 import com.example.whatsappclone.model.NotesModel
-import com.example.whatsappclone.model.StatusModel
-//import com.example.whatsappclone.databinding.FragmentChatBinding
-import com.example.whatsappclone.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -48,7 +40,6 @@ class CallFragment : Fragment() {
     private lateinit var storage: FirebaseStorage
     private var pdfUri: Uri? = null
     private lateinit var s: String
-    //private var k: Int = 0
     lateinit var userList: ArrayList<NotesModel>
 
     override fun onCreateView(
