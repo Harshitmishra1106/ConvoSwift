@@ -59,6 +59,5 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
-    implementation("com.airbnb.android:lottie:6.1.0")
 
 }
