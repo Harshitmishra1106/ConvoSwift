@@ -79,7 +79,7 @@ class CallFragment : Fragment() {
                         userList.add(user)
                     }
 
-                    binding.callRecyclerView.adapter = CallAdapter(requireContext(),userList)
+                    binding.callRecyclerView.adapter = CallAdapter(binding.root.context,userList)
                     checkEmptyState()
                 }
 

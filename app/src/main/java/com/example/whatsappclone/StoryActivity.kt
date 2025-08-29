@@ -48,5 +48,7 @@ class StoryActivity : AppCompatActivity() {
             }
             finish()
         }.start()
+        val intent = Intent(this, MainActivity2::class.java)
+        startActivity(intent)
     }
 }

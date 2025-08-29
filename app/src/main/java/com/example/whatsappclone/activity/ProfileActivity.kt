@@ -88,12 +88,25 @@ class ProfileActivity : AppCompatActivity() {
         binding.userImage.visibility = View.INVISIBLE
         binding.userImage.isClickable = false
         binding.goBackBtn.visibility = View.VISIBLE
+        binding.userName.apply {
+            isFocusable = false
+            isClickable = false
+            isEnabled = false
+            setText("Name already saved")
+        }
+        binding.phoneNo.apply {
+            isFocusable = false
+            isClickable = false
+            isEnabled = false
+            setText("Phone no. already saved")
+        }
         binding.goBackBtn.isClickable = true
         binding.profileMessage.text = "Profile Settings Already Done"
 
     }
 
     private fun uploadData() {
+        binding.progressText.visibility = View.VISIBLE
         val reference = storage.reference.child("Profile").child(Date().time.toString())
         reference.putFile(selectedImg).addOnCompleteListener{
             if(it.isSuccessful){
@@ -111,6 +124,7 @@ class ProfileActivity : AppCompatActivity() {
             .child((auth.uid.toString()))
             .setValue(user)
             .addOnSuccessListener {
+                binding.progressText.visibility = View.INVISIBLE
                 Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show()
                 makeDisable()
                 binding.goBackBtn.setOnClickListener{

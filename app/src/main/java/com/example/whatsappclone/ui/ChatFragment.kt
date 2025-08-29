@@ -51,7 +51,7 @@ class ChatFragment : Fragment() {
                         }
                     }
 
-                    binding.userListRecyclerView.adapter = ChatAdapter(requireContext(),userList)
+                    binding.userListRecyclerView.adapter = ChatAdapter(binding.root.context,userList)
                     checkEmptyState()
                 }
 

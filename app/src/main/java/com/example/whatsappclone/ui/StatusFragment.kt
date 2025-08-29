@@ -8,17 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
-import androidx.transition.Visibility
-import com.example.whatsappclone.MainActivity2
 import com.example.whatsappclone.R
-import com.example.whatsappclone.StoryActivity
-import com.example.whatsappclone.adapter.ChatAdapter
 import com.example.whatsappclone.adapter.StatusAdapter
-import com.example.whatsappclone.databinding.ActivityProfileBinding
 import com.example.whatsappclone.databinding.FragmentStatusBinding
 import com.example.whatsappclone.model.StatusModel
 import com.example.whatsappclone.model.UserModel

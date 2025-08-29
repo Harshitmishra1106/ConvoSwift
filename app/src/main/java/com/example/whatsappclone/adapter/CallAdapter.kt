@@ -2,23 +2,16 @@ package com.example.whatsappclone.adapter
 
 import android.app.DownloadManager
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.whatsappclone.R
 import com.example.whatsappclone.databinding.CallUserItemLayoutBinding
 import com.example.whatsappclone.model.NotesModel
-import com.example.whatsappclone.model.UserModel
-import com.google.android.play.integrity.internal.k
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.storage.FirebaseStorage
@@ -42,7 +35,6 @@ class CallAdapter(var context: Context, var list: ArrayList<NotesModel>) : Recyc
         database = FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance()
         holder.binding.userName.text = user.name
-        holder.binding.phone.text = user.name
         holder.binding.likeBtn.setOnClickListener{
             val updates = mapOf<String, Any>(
                 "likes" to ServerValue.increment(1) // increment by 1
