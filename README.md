@@ -5,6 +5,14 @@ It enables **real-time chat, notes sharing, profile customization, upload and vi
 
 ---
 
+## 🎥 Demo
+
+Here’s a quick demo of **Hisab Kitab** in action:
+
+![App Demo](demo/ConvoSwift_App_Demo.gif)
+
+---
+
 ## 🚀 Features
 
 - 🔐 **User Authentication** – Secure login & registration with personalized profiles  
@@ -25,12 +33,6 @@ It enables **real-time chat, notes sharing, profile customization, upload and vi
 | Profile Screen | Status Feature | Book Rankings |
 |----------------|----------------|---------------|
 | ![Profile](screenshots/IMG-20250829-WA0002.jpg) | ![Status](screenshots/IMG-20250829-WA0001.jpg) | ![Rankings](screenshots/IMG-20250829-WA0004.jpg) |
-
----
-
-## 🎥 Demo Video
-
-[![Watch the demo](screenshots/IMG-20250829-WA0005.jpg)](https://drive.google.com/file/d/1__HcJScR4toCerxGDEhq6BlqWZzD21Io/view?usp=drive_link)
 
 ---
 
